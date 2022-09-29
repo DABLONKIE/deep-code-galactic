@@ -2,7 +2,8 @@
     "name": "Deep Code Galactic",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "DeltaTime Extension": "github:kiwiphoenix364/pxt-deltatime#v2.0.0"
     },
     "files": [
         "main.blocks",
