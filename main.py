@@ -31,6 +31,17 @@ def PlayerLoop():
                 music.thump.play()
             scene.camera_shake(playerGravity / 3, 100)
         playerIsGrounded = True
+        playerGravity = 0
+    else:
+        playerIsGrounded = False
+    
+    if playerSprite.tile_kind_at(TileDirection.BOTTOM, assets.tile("""rockFloor""")):
+        if not playerIsGrounded:
+            if playerGravity > 3:
+                music.thump.play()
+            scene.camera_shake(playerGravity / 3, 100)
+        playerIsGrounded = True
+        playerGravity = 0
     else:
         playerIsGrounded = False
 
@@ -39,8 +50,6 @@ def PlayerLoop():
             playerGravity += 0.2 * Delta.DELTA()
         playerSprite.vy += (playerGravity * Delta.DELTA()) * 15
         playerSprite.vy *= 0.8
-    else:
-        playerGravity = 0
     
     playerSprite.vx += controller.dx() * 10
     playerSprite.vx *= 0.8
@@ -50,7 +59,7 @@ def PlayerLoop():
     elif playerSprite.vx < -0.1:
         playerSprite.set_image(assets.image("""testPlayerFlip"""))
 
-controller.player1.on_button_event(ControllerButton.A, ControllerButtonEvent.PRESSED, PlayerJump)
+controller.player1.on_button_event(ControllerButton.UP, ControllerButtonEvent.PRESSED, PlayerJump)
 forever(PlayerLoop)
 
 #------------------
