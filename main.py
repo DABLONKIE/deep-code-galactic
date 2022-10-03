@@ -42,6 +42,17 @@ def PlayerLoop():
             scene.camera_shake(playerGravity / 4.5, 100)
         playerIsGrounded = True
         playerGravity = 0
+
+    else:
+        playerIsGrounded = False
+    
+    if playerSprite.tile_kind_at(TileDirection.BOTTOM, assets.tile("""rockFloor""")):
+        if not playerIsGrounded:
+            if playerGravity > 3:
+                music.thump.play()
+            scene.camera_shake(playerGravity / 3, 100)
+        playerIsGrounded = True
+        playerGravity = 0
     else:
         playerIsGrounded = False
 
@@ -62,6 +73,7 @@ def PlayerLoop():
     if controller.up.is_pressed():
         PlayerJump()
 
+controller.player1.on_button_event(ControllerButton.UP, ControllerButtonEvent.PRESSED, PlayerJump)
 forever(PlayerLoop)
 
 #------------------
