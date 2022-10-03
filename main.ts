@@ -11,7 +11,7 @@ playerSprite.setPosition(50, 50)
 scene.cameraFollowSprite(playerSprite)
 // ------------------Functions
 // ------------------Main Game Loop
-controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function PlayerJump() {
+controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function PlayerJump() {
     
     console.log("jumpie")
     if (playerIsGrounded) {
@@ -34,6 +34,22 @@ forever(function PlayerLoop() {
         }
         
         playerIsGrounded = true
+        playerGravity = 0
+    } else {
+        playerIsGrounded = false
+    }
+    
+    if (playerSprite.tileKindAt(TileDirection.Bottom, assets.tile`rockFloor`)) {
+        if (!playerIsGrounded) {
+            if (playerGravity > 3) {
+                music.thump.play()
+            }
+            
+            scene.cameraShake(playerGravity / 3, 100)
+        }
+        
+        playerIsGrounded = true
+        playerGravity = 0
     } else {
         playerIsGrounded = false
     }
@@ -45,8 +61,6 @@ forever(function PlayerLoop() {
         
         playerSprite.vy += playerGravity * Delta.DELTA() * 15
         playerSprite.vy *= 0.8
-    } else {
-        playerGravity = 0
     }
     
     playerSprite.vx += controller.dx() * 10
