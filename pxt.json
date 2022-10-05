@@ -3,7 +3,8 @@
     "description": "",
     "dependencies": {
         "device": "*",
-        "DeltaTime Extension": "github:kiwiphoenix364/pxt-deltatime#v2.0.0"
+        "DeltaTime Extension": "github:kiwiphoenix364/pxt-deltatime#v2.0.0",
+        "Color Fading": "github:jwunderl/pxt-color#v0.2.2"
     },
     "files": [
         "main.blocks",
@@ -20,7 +21,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.10.34",
+        "target": "1.10.36",
         "targetId": "arcade"
     },
     "supportedTargets": [

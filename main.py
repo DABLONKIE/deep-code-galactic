@@ -29,8 +29,32 @@ def GenerateSlice(sX, sW1, sW2):
             tiles.set_tile_at(tiles.get_tile_location(sX, sY), assets.tile("""rock"""))
         tiles.set_wall_at(tiles.get_tile_location(sX, sY), True)
 def GenerateLevel():
+    currentW1 = 6
+    currentW2 = 10
     for row in range(91):
-        GenerateSlice(row + 5,6,10)
+        lenienceW1 = 0
+        lenienceW2 = 0
+        if randint(0, 2 - lenienceW1) == 0: #Mutation chance for roof
+            currentW1 += randint(-1,1)
+            lenienceW1 = 0
+
+        if randint(0, 2 - lenienceW2) == 0: #Mutation chance for floor
+            currentW2 += randint(-1,1)
+            lenienceW2 = 0
+
+        while currentW1 + 4 > currentW2: #Ensure that the roof isnt too close to the floor.
+            currentW1 -= 1
+        while currentW2 - 4 < currentW1: #Ensure that the floor isnt too close to the roof.
+            currentW2 -= 1
+
+        if currentW1 < 2:
+            currentW1 = 2
+            lenienceW1 += 1
+        if currentW2 > 15:
+            currentW2 = 15
+            lenienceW2 += 1
+            
+        GenerateSlice(row + 5,currentW1,currentW2)
 GenerateLevel()
 #------------------{Main Game Loop}
 def PlayerLoop():
@@ -51,7 +75,7 @@ def PlayerLoop():
         playerSprite.vy += (playerGravity * Delta.DELTA()) * 15
         playerSprite.vy *= 0.8
     
-    playerSprite.vx += controller.dx() * 10
+    playerSprite.vx += controller.dx() * 20
     playerSprite.vx *= 0.8
 
     if playerSprite.vx > 0.1:

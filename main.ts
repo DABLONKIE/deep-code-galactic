@@ -37,8 +37,44 @@ function GenerateSlice(sX: number, sW1: number, sW2: number) {
 }
 
 function GenerateLevel() {
+    let lenienceW1: number;
+    let lenienceW2: number;
+    let currentW1 = 6
+    let currentW2 = 10
     for (let row = 0; row < 91; row++) {
-        GenerateSlice(row + 5, 6, 10)
+        lenienceW1 = 0
+        lenienceW2 = 0
+        if (randint(0, 2 - lenienceW1) == 0) {
+            // Mutation chance for roof
+            currentW1 += randint(-1, 1)
+            lenienceW1 = 0
+        }
+        
+        if (randint(0, 2 - lenienceW2) == 0) {
+            // Mutation chance for floor
+            currentW2 += randint(-1, 1)
+            lenienceW2 = 0
+        }
+        
+        while (currentW1 + 4 > currentW2) {
+            // Ensure that the roof isnt too close to the floor.
+            currentW1 -= 1
+        }
+        while (currentW2 - 4 < currentW1) {
+            // Ensure that the floor isnt too close to the roof.
+            currentW2 -= 1
+        }
+        if (currentW1 < 2) {
+            currentW1 = 2
+            lenienceW1 += 1
+        }
+        
+        if (currentW2 > 15) {
+            currentW2 = 15
+            lenienceW2 += 1
+        }
+        
+        GenerateSlice(row + 5, currentW1, currentW2)
     }
 }
 
@@ -70,7 +106,7 @@ forever(function PlayerLoop() {
         playerSprite.vy *= 0.8
     }
     
-    playerSprite.vx += controller.dx() * 10
+    playerSprite.vx += controller.dx() * 20
     playerSprite.vx *= 0.8
     if (playerSprite.vx > 0.1) {
         playerSprite.setImage(assets.image`testPlayer`)
