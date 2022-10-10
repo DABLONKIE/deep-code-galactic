@@ -22,7 +22,8 @@ function PlayerJump() {
 
 function PlayerMine() {
     
-    animation.runImageAnimation(playerSprite, assets.animation`playerTestMining`, 75, false)
+    animation.runImageAnimation(playerSprite, assets.animation`testPlayerMine`, 75, false)
+    FlipAnimation(assets.animation`testPlayerMine`)
     playerStatus = "mining"
     timer.after(300, function on_after() {
         
@@ -98,9 +99,9 @@ function GenerateLevel() {
     console.log("Times prevented:" + timesPrevented)
 }
 
-function FlipAnimation(animation: number[]) {
+function FlipAnimation(animation: any[]) {
     for (let i of animation) {
-        console.log(animation[i])
+        console.log(i)
     }
 }
 

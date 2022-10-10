@@ -19,8 +19,8 @@ def PlayerJump():
         playerSprite.y += -3
 def PlayerMine():
     global playerStatus
-    
-    animation.run_image_animation(playerSprite, assets.animation("""playerTestMining"""), 75, False)
+    animation.run_image_animation(playerSprite, assets.animation("""testPlayerMine"""), 75, False)
+    FlipAnimation(assets.animation("""testPlayerMine"""))
     playerStatus = "mining"
     def on_after():
         global playerStatus
@@ -76,8 +76,10 @@ def GenerateLevel():
     print("Times corrected:"+timesCorrected)
     print("Times prevented:"+timesPrevented)
 def FlipAnimation(animation):
+    newAnim = []
     for i in animation:
-        print(animation[i])
+        i.flip_x()
+        
 GenerateLevel()
 #------------------{Main Game Loop}
 def PlayerLoop():
