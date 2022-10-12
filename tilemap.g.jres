@@ -28,6 +28,18 @@
         "tilemapTile": true,
         "displayName": "rock"
     },
+    "tile5": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "myTile"
+    },
+    "tile6": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABVVVVVZQAAAFVVVVVlAAAAVVVVVWUAAABVVVVVZQAAAFVVVVVmAAAAVVVVVWYAAABVVVVlZgAAAFVVVWZmAAAAVVVmZmYAAABmZmZmZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "testDeposit"
+    },
     "levelTemplate1": {
         "id": "levelTemplate1",
         "mimeType": "application/mkcd-tilemap",
