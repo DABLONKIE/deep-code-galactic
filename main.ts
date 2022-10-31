@@ -6,6 +6,7 @@ let playerHealth = 100
 let playerIsGrounded = false
 let playerGravity = 0
 let playerStatus = "idle"
+let playerDirection = 1
 // ------------------{Starting Code}
 playerSprite.setPosition(50, 120)
 scene.cameraFollowSprite(playerSprite)
@@ -21,13 +22,25 @@ function PlayerJump() {
 }
 
 function PlayerMine() {
+    let flip = IsFlipNecessary()
+    if (playerDirection == 1) {
+        animation.runImageAnimation(playerSprite, assets.animation`testPlayerMine`, 75, false)
+    } else if (playerDirection == -1) {
+        animation.runImageAnimation(playerSprite, FlipAnimation(assets.animation`testPlayerMine`), 75, false)
+    }
     
-    animation.runImageAnimation(playerSprite, assets.animation`testPlayerMine`, 75, false)
-    FlipAnimation(assets.animation`testPlayerMine`)
     playerStatus = "mining"
     timer.after(300, function on_after() {
         
         playerStatus = "idle"
+        let sprite = assets.image`testPlayer`
+        if (playerDirection == 1) {
+            playerSprite.setImage(sprite)
+        } else if (playerDirection == -1) {
+            sprite.flipX()
+            playerSprite.setImage(sprite)
+        }
+        
     })
 }
 
@@ -47,6 +60,10 @@ function GenerateSlice(sX: number, sW1: number, sW2: number) {
         
         tiles.setWallAt(tiles.getTileLocation(sX, sY), true)
     }
+    if (randint(0, 10) == 0) {
+        tiles.setTileAt(tiles.getTileLocation(sX, sW2 - 1), assets.tile`testDeposit`)
+    }
+    
 }
 
 function GenerateLevel() {
@@ -99,16 +116,34 @@ function GenerateLevel() {
     console.log("Times prevented:" + timesPrevented)
 }
 
-function FlipAnimation(animation: any[]) {
+// ------------------[QOL Functions]
+function FlipAnimation(animation: Image[]): Image[] {
+    let curSprite: Image;
+    let newAnimation : Image[] = []
     for (let i of animation) {
-        console.log(i)
+        curSprite = i
+        curSprite.flipX()
+        newAnimation.push(curSprite)
     }
+    return newAnimation
+}
+
+function IsFlipNecessary(): number {
+    let result = 0
+    if (playerSprite.vx > 0.1) {
+        result = 1
+    } else if (playerSprite.vx < -0.1) {
+        result = -1
+    }
+    
+    return result
 }
 
 GenerateLevel()
 // ------------------{Main Game Loop}
 forever(function PlayerLoop() {
     let sprite: Image;
+    let flip: number;
     
     if (playerSprite.tileKindAt(TileDirection.Bottom, assets.tile`rockFloor`)) {
         if (!playerIsGrounded) {
@@ -136,11 +171,16 @@ forever(function PlayerLoop() {
     
     if (playerStatus == "idle") {
         sprite = assets.image`testPlayer`
-        if (playerSprite.vx > 0.1) {
+        flip = IsFlipNecessary()
+        if (flip == 1) {
             playerSprite.setImage(sprite)
-        } else if (playerSprite.vx < -0.1) {
+        } else if (flip == -1) {
             sprite.flipX()
             playerSprite.setImage(sprite)
+        }
+        
+        if (flip != 0) {
+            playerDirection = flip
         }
         
         playerSprite.vx += controller.dx() * 20
