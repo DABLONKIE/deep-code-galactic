@@ -22,7 +22,6 @@ function PlayerJump() {
 }
 
 function PlayerMine() {
-    
     let flip = IsFlipNecessary()
     if (playerDirection == 1) {
         animation.runImageAnimation(playerSprite, assets.animation`testPlayerMine`, 75, false)
