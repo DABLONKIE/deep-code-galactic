@@ -7,7 +7,9 @@ playerHealth = 100
 playerIsGrounded = False
 playerGravity: number = 0
 playerStatus = "idle"
+tempSprites: List[Sprite] = []
 playerDirection = 1
+tempSpriteNum = 0
 #------------------{Starting Code}
 playerSprite.set_position(50, 120)
 scene.camera_follow_sprite(playerSprite)
@@ -35,8 +37,10 @@ def PlayerMine():
         elif playerDirection == -1:
             sprite.flip_x()
             playerSprite.set_image(sprite)
-        
-    timer.after(300, on_after)
+        location = tiles.location_of_sprite(playerSprite)
+        if tiles.tile_at_location_equals(location, assets.tile("testDeposit")):
+            tiles.set_tile_at(location, assets.tile("testDepositMine"))
+    timer.after(600, on_after)
 def GenerateSlice(sX, sW1, sW2):
     for sY in range(16):
         if sY > sW1 and sY < sW2:
@@ -103,8 +107,21 @@ def IsFlipNecessary():
     elif playerSprite.vx < -0.1:
         result = -1
     return result
-GenerateLevel()
+def CreateTempSprite(spriteAnimation: List[Image], x, y, speed, z = 100, tileset = False): #Creates a temporary sprite to play an animation
+    global tempSprites, tempSpriteNum
+    tempSprites.append(sprites.create(assets.image("""emptySpace""")))
+    tempSprites[len(tempSprites) - 1].x = x
+    tempSprites[len(tempSprites) - 1].y = y
+    tempSprites[len(tempSprites) - 1].z = z
+    tempSpriteNum += 1
+    animation.run_image_animation(tempSprites[len(tempSprites) - 1], spriteAnimation, speed, False)
+    delay = speed * len(spriteAnimation)
+    def on_debounce():
+        tempSprites.shift().destroy()
+    timer.debounce(str(tempSpriteNum), delay, on_debounce)
+
 #------------------{Main Game Loop}
+GenerateLevel()
 def PlayerLoop():
     global playerHealth, playerIsGrounded, playerGravity, playerDirection
     if playerSprite.tile_kind_at(TileDirection.BOTTOM, assets.tile("""rockFloor""")):

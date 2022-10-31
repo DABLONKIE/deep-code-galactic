@@ -5,7 +5,8 @@
         "device": "*",
         "DeltaTime Extension": "github:kiwiphoenix364/pxt-deltatime#v2.0.0",
         "Color Fading": "github:jwunderl/pxt-color#v0.2.2",
-        "Timers": "github:microsoft/arcade-timers#v1.1.0"
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "tilemaps": "github:microsoft/pxt-tilemaps#v1.12.0"
     },
     "files": [
         "main.blocks",
@@ -35,8 +36,8 @@
         "#616161",
         "#808080",
         "#4d4b4b",
-        "#000000",
-        "#000000",
+        "#eb4034",
+        "#b3190e",
         "#000000",
         "#000000",
         "#000000",

@@ -6,7 +6,9 @@ let playerHealth = 100
 let playerIsGrounded = false
 let playerGravity = 0
 let playerStatus = "idle"
+let tempSprites : Sprite[] = []
 let playerDirection = 1
+let tempSpriteNum = 0
 // ------------------{Starting Code}
 playerSprite.setPosition(50, 120)
 scene.cameraFollowSprite(playerSprite)
@@ -22,6 +24,7 @@ function PlayerJump() {
 }
 
 function PlayerMine() {
+    
     let flip = IsFlipNecessary()
     if (playerDirection == 1) {
         animation.runImageAnimation(playerSprite, assets.animation`testPlayerMine`, 75, false)
@@ -30,7 +33,7 @@ function PlayerMine() {
     }
     
     playerStatus = "mining"
-    timer.after(300, function on_after() {
+    timer.after(600, function on_after() {
         
         playerStatus = "idle"
         let sprite = assets.image`testPlayer`
@@ -39,6 +42,11 @@ function PlayerMine() {
         } else if (playerDirection == -1) {
             sprite.flipX()
             playerSprite.setImage(sprite)
+        }
+        
+        let location = tiles.locationOfSprite(playerSprite)
+        if (tiles.tileAtLocationEquals(location, assets.tile`testDeposit`)) {
+            tiles.setTileAt(location, assets.tile`testDepositMine`)
         }
         
     })
@@ -139,8 +147,23 @@ function IsFlipNecessary(): number {
     return result
 }
 
-GenerateLevel()
+function CreateTempSprite(spriteAnimation: Image[], x: number, y: number, speed: number, z: number = 100, tileset: boolean = false) {
+    // Creates a temporary sprite to play an animation
+    
+    tempSprites.push(sprites.create(assets.image`emptySpace`))
+    tempSprites[tempSprites.length - 1].x = x
+    tempSprites[tempSprites.length - 1].y = y
+    tempSprites[tempSprites.length - 1].z = z
+    tempSpriteNum += 1
+    animation.runImageAnimation(tempSprites[tempSprites.length - 1], spriteAnimation, speed, false)
+    let delay = speed * spriteAnimation.length
+    timer.debounce("" + tempSpriteNum, delay, function on_debounce() {
+        tempSprites.shift().destroy()
+    })
+}
+
 // ------------------{Main Game Loop}
+GenerateLevel()
 forever(function PlayerLoop() {
     let sprite: Image;
     let flip: number;
